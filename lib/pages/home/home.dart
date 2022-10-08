@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                   return book.books.isEmpty
                       ? Column(
                           children: [
-                            SizedBox(height: 200),
+                            SizedBox(height: 150),
                             Text(
                               msg,
                               style: TextStyle(

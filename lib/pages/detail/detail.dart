@@ -1,5 +1,5 @@
 //construct detail page of book
-
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 
 class DetailPage extends StatefulWidget {
@@ -10,6 +10,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  int lines = 5;
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> data =
@@ -17,6 +18,25 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Detalles del libro"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.public),
+            tooltip: 'Share',
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.share),
+            tooltip: 'Share',
+            onPressed: () async {
+              await Share.share(
+                  'Titulo: ' +
+                      data['volumeInfo']['title'] +
+                      '\nPaginas: ' +
+                      data['volumeInfo']['pageCount'].toString(),
+                  subject: 'Libro');
+            },
+          ),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(10),
@@ -45,22 +65,39 @@ class _DetailPageState extends State<DetailPage> {
             ),
             SizedBox(height: 10),
             Text(
-              data["volumeInfo"]["authors"] == null
-                  ? "No hay autor"
-                  : data["volumeInfo"]["authors"][0],
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              data["volumeInfo"]["publisher"] == null
+                  ? 'NA'
+                  : data["volumeInfo"]["publishedDate"],
+              style: TextStyle(fontSize: 15),
             ),
             SizedBox(height: 10),
-            /* Text(
-              data['description'],
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Text(
+              data['volumeInfo']["pageCount"] == null
+                  ? 'NA'
+                  : 'Paginas: ' + data['volumeInfo']["pageCount"].toString(),
+              style: TextStyle(fontSize: 15),
+            ),
+            SizedBox(height: 10),
+            SingleChildScrollView(
+              child: GestureDetector(
+                onTap: () {
+                  lines = lines == 5 ? 100 : 5;
+                  setState(() {});
+                },
+                child: Text(
+                  //
+                  data["volumeInfo"]["description"] == null
+                      ? 'NA'
+                      : data["volumeInfo"]["description"],
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: lines,
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'italic',
+                      fontStyle: FontStyle.italic),
+                ),
               ),
-            ), */
+            ),
           ],
         ),
       ),
