@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'dart:ffi';
-
+import 'package:flutter_shimmer/flutter_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tarea3/providers/search_provider.dart';
@@ -60,16 +61,33 @@ class _HomePageState extends State<HomePage> {
               Consumer<SearchBook>(
                 builder: (context, book, child) {
                   return book.books.isEmpty
-                      ? Column(
-                          children: [
-                            SizedBox(height: 150),
-                            Text(
-                              msg,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        )
+                      ? book.loading == true
+                          ? Expanded(
+                              child: GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
+                                itemCount: 11,
+                                itemBuilder: (context, index) {
+                                  return ProfilePageShimmer(
+                                    margin: EdgeInsets.all(0),
+                                    hasBottomBox: false,
+                                  );
+                                },
+                              ),
+                            )
+                          : Column(
+                              children: [
+                                SizedBox(height: 150),
+                                Text(
+                                  msg,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )
                       : Expanded(
                           child: GridView.builder(
                             gridDelegate:

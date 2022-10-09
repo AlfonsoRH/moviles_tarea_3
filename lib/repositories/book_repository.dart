@@ -16,6 +16,8 @@ class BookRepository {
       if (data['items'] != null) {
         _books = data['items'] as List;
         return _books;
+      } else {
+        return [];
       }
     } else {
       return _books = [];
